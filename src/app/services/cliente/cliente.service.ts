@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Cliente } from 'src/app/models/cliente';
 import { CLIENTES } from 'src/app/shared/cliente/clientes.json';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/Operators';
+import { map, catchError } from 'rxjs/Operators';
+import swal from 'sweetalert2';
+
+import { Router } from '@angular/router';
 
 @Injectable()
 export class ClienteService {
@@ -14,7 +17,8 @@ export class ClienteService {
   });
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) { }
 
   getClientes(): Observable<Cliente[]> {
@@ -30,7 +34,14 @@ export class ClienteService {
   }
 
   getCliente(id: number): Observable<Cliente> {
-    return this.http.get<Cliente>(`${this.urlEndPoint}/${id}`);
+    return this.http.get<Cliente>(`${this.urlEndPoint}/${id}`).pipe(
+      catchError(e => {
+        this.router.navigate(['/clientes']);
+        console.error(e.error.mensaje);
+        swal('Error al editar', e.error.mensaje, 'error');
+        return throwError(e);
+      })
+    );
   }
 
   update(cliente: Cliente): Observable<Cliente> {
