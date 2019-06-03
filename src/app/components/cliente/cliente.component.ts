@@ -11,6 +11,7 @@ import swal from 'sweetalert2';
 export class ClienteComponent implements OnInit {
 
   clientes: Cliente[];
+  valorboolean: boolean = true;
 
   constructor(
     private _clienteServices: ClienteService
@@ -44,6 +45,6 @@ export class ClienteComponent implements OnInit {
           }
         );
       }
-    })
+    });
   }
 }

@@ -1,3 +1,6 @@
+<ul class="alert alert-danger" *ngIf="errores?.length > 0">
+  <li *ngFor="let err of errores">{{ err }}</li>
+</ul>
 <div class="card bg-dark text-white">
   <div class="card-header">{{ titulo }}</div>
   <div class="card-body">
@@ -5,7 +8,7 @@
       <div class="form-group row">
         <label class="col-form-label col-sm-2">Nombre</label>
         <div class="col-sm-6">
-          <input [(ngModel)]="cliente.nombre" type="text" class="form-control" name="name" required minlength="4" #nombre="ngModel">
+          <input [(ngModel)]="cliente.nombre" type="text" class="form-control" name="name" #nombre="ngModel">
           <div class="alert alert-danger" *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)">
             <div *ngIf="nombre.errors.required">
               Nombre es requerido
@@ -19,7 +22,7 @@
       <div class="form-group row">
         <label class="col-form-label col-sm-2">Apellido</label>
         <div class="col-sm-6">
-          <input [(ngModel)]="cliente.apellido" type="text" class="form-control" name="apellido" required #apellido="ngModel">
+          <input [(ngModel)]="cliente.apellido" type="text" class="form-control" name="apellido" #apellido="ngModel">
           <div class="alert alert-danger" *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)">
             <div *ngIf="apellido.errors.required">
               Apellido es requerido
@@ -30,7 +33,7 @@
       <div class="form-group row">
         <label class="col-form-label col-sm-2">Email</label>
         <div class="col-sm-6">
-          <input [(ngModel)]="cliente.email" type="email" class="form-control" name="email" required email #email="ngModel">
+          <input [(ngModel)]="cliente.email" type="email" class="form-control" name="email" #email="ngModel">
           <div class="alert alert-danger" *ngIf="email.invalid && (email.dirty || email.touched)">
             <div *ngIf="email.errors.required">
               Email es requerido
