@@ -6,8 +6,7 @@ import { map, catchError } from 'rxjs/Operators';
 import swal from 'sweetalert2';
 
 import { Router } from '@angular/router';
-import { formatDate, DatePipe, registerLocaleData } from '@angular/common';
-import localePe from '@angular/common/locales/es-PE';
+// import {  DatePipe } from '@angular/common';
 
 @Injectable()
 export class ClienteService {
@@ -29,11 +28,10 @@ export class ClienteService {
       map( (response: Cliente[]) => {
         const clientes = response as Cliente[];
         return clientes.map(cliente => {
-          cliente.nombre = cliente.nombre.toUpperCase();
-          registerLocaleData(localePe, 'es');
+          // cliente.nombre = cliente.nombre.toUpperCase();
           // cliente.createAt = formatDate(cliente.createAt, 'dd-MM-yyyy', 'en-US');
-          const datePipe = new DatePipe('es');
-          cliente.createAt = datePipe.transform(cliente.createAt, 'EEEE dd, MMM yyyy');
+          // const datePipe = new DatePipe('es');
+          // cliente.createAt = datePipe.transform(cliente.createAt, 'EEEE dd, MMM yyyy');
           return cliente;
         });
       })
