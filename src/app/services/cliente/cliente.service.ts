@@ -21,32 +21,19 @@ export class ClienteService {
     private router: Router
   ) { }
 
-  getClientes(): Observable<Cliente[]> {
-    // return of(CLIENTES);
-    // return this.http.get<Cliente[]>(this.urlEndPoint);
-    return this.http.get(this.urlEndPoint).pipe(
-      // Solo sirve para manipular los datos, es importante el orden
-      // tap( response => {
-      //   const clientes = response as Cliente[];
-      //   clientes.forEach(cliente => {
-      //     console.log(cliente.nombre);
-      //   });
-      // }),
-      map( (response: Cliente[]) => {
-        const clientes = response as Cliente[];
-        return clientes.map(cliente => {
-          // cliente.nombre = cliente.nombre.toUpperCase();
-          // cliente.createAt = formatDate(cliente.createAt, 'dd-MM-yyyy', 'en-US');
-          // const datePipe = new DatePipe('es');
-          // cliente.createAt = datePipe.transform(cliente.createAt, 'EEEE dd, MMM yyyy');
-          return cliente;
-        });
-      }),
-      tap( clientes => {
-        clientes.forEach(cliente => {
+  getClientes(page: number): Observable<any> {
+    return this.http.get(this.urlEndPoint + '/page/' + page).pipe(
+      tap( (response: any) => {
+        (response.content as Cliente[]).forEach(cliente => {
           console.log(cliente.nombre);
         });
       }),
+      map( (response: any) => {
+        const clientes = response.content as Cliente[];
+        return clientes.map(cliente => {
+          return cliente;
+        });
+      })
     );
   }
 

@@ -4,6 +4,7 @@ import { Cliente } from 'src/app/models/cliente';
 import { ClienteService } from 'src/app/services/cliente/cliente.service';
 import swal from 'sweetalert2';
 import { tap } from 'rxjs/Operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cliente',
@@ -15,11 +16,20 @@ export class ClienteComponent implements OnInit {
   valorboolean: boolean = true;
 
   constructor(
-    private _clienteServices: ClienteService
+    private _clienteServices: ClienteService,
+    private _activateRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    this._clienteServices.getClientes().pipe(
+    let page = 0;
+    this._activateRoute.paramMap.subscribe( params => {
+      page = +params.get('page');
+      console.log(page);
+      if (!page) {
+        page = 0;
+      }
+    });
+    this._clienteServices.getClientes(page).pipe(
       // trabajar con lso datos sin cambiarlos
         tap( clientes => {
           console.log('CleinteService: tab 3');
