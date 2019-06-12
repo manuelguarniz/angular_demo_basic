@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Cliente } from 'src/app/models/cliente';
 import { Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map, catchError } from 'rxjs/Operators';
+import { map, catchError, tap } from 'rxjs/Operators';
 import swal from 'sweetalert2';
 
 import { Router } from '@angular/router';
@@ -25,6 +25,13 @@ export class ClienteService {
     // return of(CLIENTES);
     // return this.http.get<Cliente[]>(this.urlEndPoint);
     return this.http.get(this.urlEndPoint).pipe(
+      // Solo sirve para manipular los datos, es importante el orden
+      // tap( response => {
+      //   const clientes = response as Cliente[];
+      //   clientes.forEach(cliente => {
+      //     console.log(cliente.nombre);
+      //   });
+      // }),
       map( (response: Cliente[]) => {
         const clientes = response as Cliente[];
         return clientes.map(cliente => {
@@ -34,7 +41,12 @@ export class ClienteService {
           // cliente.createAt = datePipe.transform(cliente.createAt, 'EEEE dd, MMM yyyy');
           return cliente;
         });
-      })
+      }),
+      tap( clientes => {
+        clientes.forEach(cliente => {
+          console.log(cliente.nombre);
+        });
+      }),
     );
   }
 

@@ -3,6 +3,7 @@ import { CLIENTES } from 'src/app/shared/cliente/clientes.json';
 import { Cliente } from 'src/app/models/cliente';
 import { ClienteService } from 'src/app/services/cliente/cliente.service';
 import swal from 'sweetalert2';
+import { tap } from 'rxjs/Operators';
 
 @Component({
   selector: 'app-cliente',
@@ -18,9 +19,15 @@ export class ClienteComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this._clienteServices.getClientes().subscribe((req) => {
-      this.clientes = req;
-    });
+    this._clienteServices.getClientes().pipe(
+      // trabajar con lso datos sin cambiarlos
+        tap( clientes => {
+          console.log('CleinteService: tab 3');
+          clientes.forEach(cliente => {
+            console.log(cliente.nombre);
+          });
+        })
+      ).subscribe(clientes => this.clientes = clientes);
   }
 
   delete(cliente: Cliente): void {
